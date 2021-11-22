@@ -3,8 +3,12 @@ def preBuild() {
 }
 
 def Build() {
-    sh("cmake --build .")
-    sh("./asd")
+    dir("build") {
+        sh("conan install ..")
+        sh("cmake ..")
+        sh("cmake --build .")
+        sh("./myapp")
+    }
 }
 
 return this;
