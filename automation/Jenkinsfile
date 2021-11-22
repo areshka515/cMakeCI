@@ -1,0 +1,15 @@
+def tool
+
+pipeline {
+    agent any;
+    stages {
+        stage("preBuild") {
+            steps {
+                script {
+                    tool = load("automation/buildTool.groovy");
+                    tool.preBuild();
+                }
+            }
+        }
+    }
+}
