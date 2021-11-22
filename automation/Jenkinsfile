@@ -18,6 +18,12 @@ pipeline {
                     tool.Build();
                 }
             }
+
+            post {
+                always {
+                    sh("rm -rf build")
+                }
+            }
         }
     }
 }
