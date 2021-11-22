@@ -1,0 +1,5 @@
+asd
+cmake_*
+CMakeCache*
+Makefile*
+CMakeFiles
