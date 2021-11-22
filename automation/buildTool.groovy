@@ -1,5 +1,10 @@
 def preBuild() {
-    echo "asd";
+    sh("cmake .");
+}
+
+def Build() {
+    sh("cmake --build .")
+    sh("./asd")
 }
 
 return this;

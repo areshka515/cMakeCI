@@ -11,5 +11,13 @@ pipeline {
                 }
             }
         }
+
+        stage("Build") {
+            steps {
+                script {
+                    tool.Build();
+                }
+            }
+        }
     }
 }
