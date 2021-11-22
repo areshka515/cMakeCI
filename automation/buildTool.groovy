@@ -1,5 +1,5 @@
 def preBuild() {
-    sh("cmake .");
+    sh("mkdir build")
 }
 
 def Build() {
