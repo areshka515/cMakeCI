@@ -6,10 +6,11 @@ def createVersion() {
     prefix = "origin/"
     branchname = env.GIT_BRANCH.substring(prefix.size())
     echo "${branchname}"
-    if(branchname == "main") {
+    if(branchname == "master") {
         ver = sh(script: "echo ${branchname} | cut -d / -f 2", returnStdout: true).trim()
 
         lasttag = sh(script: "git tag -l --sort=version:refname \"v${ver}.*\" | tail -1", returnStdout: true).trim()
+        echo "${lasttag}"
         def newtag
         if (lasttag == "null") {
             sh "git tag v${ver}.0"
@@ -27,16 +28,16 @@ def createVersion() {
 }
 
 def preBuild() {
-    sh("mkdir build")
-    server = Artifactory.server "artifactory"
-    client = Artifactory.newConanClient()
-    serverName = client.remote.add server: server, repo: "conan-local"
+    //sh("mkdir build")
+    //server = Artifactory.server "artifactory"
+    //client = Artifactory.newConanClient()
+    //serverName = client.remote.add server: server, repo: "conan-local"
     version = createVersion();
 }
 
 def Build() {
     dir("build") {
-        client.run(command: "create .. HelloWorld/0.1@release")
+        client.run(command: "create .. HelloWorld/0.1@jenkins/release")
 
         /*sh("conan install ..")
         sh("cmake ..")
