@@ -29,7 +29,7 @@ pipeline {
         stage("Tests") {
             steps {
                 script {
-                    tool.deployTests();
+                    tool.testExecutable();
                 }
             }
         }

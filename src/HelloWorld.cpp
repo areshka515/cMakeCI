@@ -1,8 +1,8 @@
 #include <iostream>
-#include "HelloWorld.h"
 
 using namespace std;
 
-void HelloWorld::printMessage() {
-    cout << "Hello World!";
+int main () {
+    cout << "hello world" << endl;
+    return 1;
 }
