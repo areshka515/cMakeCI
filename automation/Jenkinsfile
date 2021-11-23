@@ -21,15 +21,7 @@ pipeline {
 
             post {
                 always {
-                    sh("rm -rf build")
-                }
-            }
-        }
-
-        stage("Tests") {
-            steps {
-                script {
-                    tool.testExecutable();
+                    sh("rm -rf build | true")
                 }
             }
         }

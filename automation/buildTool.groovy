@@ -1,12 +1,14 @@
 def server
 def client
 def serverName
-def version
+def VERSION
+def CHANNEL
 
 def createVersion() {
     prefix = "origin/"
     branchname = env.GIT_BRANCH.substring(prefix.size())
-    if(branchname == "master") {
+    CHANNEL = branchname == "master" ? "release" : "feature"
+    if(branchname == "master" || branchname.contains("feature/")) {
         ver = sh(script: "echo ${branchname} | cut -d / -f 2", returnStdout: true).trim()
 
         lasttag = sh(script: "git tag -l --sort=version:refname \"${ver}.*\" | tail -1", returnStdout: true).trim()
@@ -20,7 +22,7 @@ def createVersion() {
             newtag = newtag.join('.')
             sh "git tag ${newtag}"
         }
-        version = newtag
+        VERSION = newtag
     }
 }
 
@@ -34,14 +36,8 @@ def preBuild() {
 
 def Build() {
     dir("build") {
-        String command = "create .. HelloWorld/${version}@jenkins/release"
+        String command = "create .. HelloWorld/${VERSION}@jenkins/${CHANNEL}"
         client.run(command: command)
-    }
-}
-
-def testExecutable() {
-    dir("build") {
-
     }
 }
 
