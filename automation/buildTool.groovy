@@ -5,17 +5,15 @@ def serverName
 def createVersion() {
     prefix = "origin/"
     branchname = env.GIT_BRANCH.substring(prefix.size())
-    echo "${branchname}"
     if(branchname == "master") {
         ver = sh(script: "echo ${branchname} | cut -d / -f 2", returnStdout: true).trim()
 
-        lasttag = sh(script: "git tag -l --sort=version:refname \"v${ver}.*\" | tail -1", returnStdout: true).trim()
+        lasttag = sh(script: "git tag -l --sort=version:refname \"${ver}.*\" | tail -1", returnStdout: true).trim()
         echo "${lasttag}"
         def newtag
         if (lasttag.isEmpty()) {
-            sh "git tag v${ver}.0"
-            newtag = "v${ver}.0"
-            print("asd")
+            sh "git tag ${ver}.0"
+            newtag = "${ver}.0"
         } else {
             newtag = lasttag.split('\\.')
             newtag[1] = newtag[1].toInteger() + 1
