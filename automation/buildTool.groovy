@@ -1,6 +1,7 @@
 def server
 def client
 def serverName
+def version
 
 def createVersion() {
     prefix = "origin/"
@@ -9,7 +10,6 @@ def createVersion() {
         ver = sh(script: "echo ${branchname} | cut -d / -f 2", returnStdout: true).trim()
 
         lasttag = sh(script: "git tag -l --sort=version:refname \"${ver}.*\" | tail -1", returnStdout: true).trim()
-        echo "${lasttag}"
         def newtag
         if (lasttag.isEmpty()) {
             sh "git tag ${ver}.0"
@@ -20,8 +20,7 @@ def createVersion() {
             newtag = newtag.join('.')
             sh "git tag ${newtag}"
         }
-        NEWTAG = newtag
-        echo "${NEWTAG}"
+        version = newtag
     }
 }
 
@@ -30,17 +29,12 @@ def preBuild() {
     server = Artifactory.server "artifactory"
     client = Artifactory.newConanClient()
     serverName = client.remote.add server: server, repo: "conan-local"
-    version = createVersion();
+    createVersion()
 }
 
 def Build() {
     dir("build") {
-        client.run(command: "create .. HelloWorld/0.1@jenkins/release")
-
-        /*sh("conan install ..")
-        sh("cmake ..")
-        sh("cmake --build .")
-        sh("./myapp")*/
+        client.run(command: "create .. HelloWorld/${version}@jenkins/release")
     }
 }
 
