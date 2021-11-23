@@ -33,5 +33,13 @@ pipeline {
                 }
             }
         }
+
+        stage("publish") {
+            steps {
+                script {
+                    tool.publishToArtifactory();
+                }
+            }
+        }
     }
 }

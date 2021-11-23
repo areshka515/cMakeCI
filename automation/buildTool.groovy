@@ -45,7 +45,7 @@ def testExecutable() {
     }
 }
 
-def publish() {
+def publishToArtifactory() {
     String command = "upload \"*\" --all -r ${serverName} --confirm"
     def b = client.run(command: command)
     server.publishBuildInfo b
