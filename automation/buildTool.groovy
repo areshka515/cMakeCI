@@ -9,7 +9,7 @@ def Build() {
         def client = Artifactory.newConanClient()
         def serverName = client.remote.add server: server, repo: "conan-local"
 
-        client.run(command: "create . 1.0@")
+        client.run(command: "create . HelloWorld/0.1@jenkins/release")
 
         /*sh("conan install ..")
         sh("cmake ..")
