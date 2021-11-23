@@ -34,7 +34,8 @@ def preBuild() {
 
 def Build() {
     dir("build") {
-        client.run(command: "create .. HelloWorld/${version}@jenkins/release")
+        String command = "create .. HelloWorld/${version}@jenkins/release"
+        client.run(command: command)
     }
 }
 
