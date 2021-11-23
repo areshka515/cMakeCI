@@ -22,4 +22,10 @@ def Build() {
     }
 }
 
+def deployTests() {
+    dir("build") {
+        
+    }
+}
+
 return this;
