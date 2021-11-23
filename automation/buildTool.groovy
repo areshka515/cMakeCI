@@ -12,7 +12,7 @@ def createVersion() {
         lasttag = sh(script: "git tag -l --sort=version:refname \"v${ver}.*\" | tail -1", returnStdout: true).trim()
         echo "${lasttag}"
         def newtag
-        if (lasttag == "null") {
+        if (lasttag.isEmpty()) {
             sh "git tag v${ver}.0"
             newtag = "v${ver}.0"
             print("asd")
