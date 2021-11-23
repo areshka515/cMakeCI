@@ -26,10 +26,10 @@ def createVersion() {
 }
 
 def preBuild() {
-    //sh("mkdir build")
-    //server = Artifactory.server "artifactory"
-    //client = Artifactory.newConanClient()
-    //serverName = client.remote.add server: server, repo: "conan-local"
+    sh("mkdir build | true")
+    server = Artifactory.server "artifactory"
+    client = Artifactory.newConanClient()
+    serverName = client.remote.add server: server, repo: "conan-local"
     version = createVersion();
 }
 
