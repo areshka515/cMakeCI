@@ -5,8 +5,6 @@ def VERSION
 def CHANNEL
 def CLIENT
 
-def clients = ["nightly", "develeap", "rgo", "google"] as String[]
-
 def createVersion() {
     prefix = "origin/"
     branchname = env.GIT_BRANCH.substring(prefix.size())
@@ -26,7 +24,7 @@ def createVersion() {
             sh "git tag ${newtag}"
         }
         VERSION = newtag
-        CLIENT = clients[0];
+        CLIENT = "nightly"
     }
 }
 
@@ -40,7 +38,7 @@ def preBuild() {
 
 def Build() {
     dir("build") {
-        String command = "create .. HelloWorld/${VERSION}@${CLIENT}/${CHANNEL}"
+        String command = "create .. HelloWorld/${VERSION}@${CLIENT}"
         client.run(command: command)
     }
 }
