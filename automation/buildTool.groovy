@@ -9,7 +9,7 @@ def createVersion() {
     prefix = "origin/"
     branchname = env.GIT_BRANCH.substring(prefix.size())
     CHANNEL = branchname == "master" ? "stable" : "release"
-    ver = sh(script: "echo ${branchname} | cut -d _ -f 2", returnStdout: true).trim()
+    //ver = sh(script: "echo ${branchname} | cut -d _ -f 2", returnStdout: true).trim()
     echo "${branchname}"
     echo "${ver}"
     //|| branchname.contains("feature/")
@@ -29,7 +29,8 @@ def createVersion() {
         CLIENT = "rgo"
     }
     else if(branchname.startsWith("release")) {
-        
+        releasebranch = branchname.split('\\_')
+        echo "${releasebranch}"
     }
 }
 
