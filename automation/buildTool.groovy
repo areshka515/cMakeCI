@@ -8,7 +8,7 @@ def CLIENT
 def createVersion() {
     prefix = "origin/"
     branchname = env.GIT_BRANCH.substring(prefix.size())
-    CHANNEL = branchname == "master" ? "release" : "feature"
+    //CHANNEL = branchname == "master" ? "release" : "feature"
     ver = sh(script: "echo ${branchname} | cut -d / -f 2", returnStdout: true).trim()
     //|| branchname.contains("feature/")
     if(branchname == "master") {
@@ -24,7 +24,8 @@ def createVersion() {
             sh "git tag ${newtag}"
         }
         VERSION = newtag
-        CLIENT = "nightly"
+        CLIENT = "rgo"
+        CHANNEL = "nightly"
     }
 }
 
@@ -38,7 +39,7 @@ def preBuild() {
 
 def Build() {
     dir("build") {
-        String command = "create .. HelloWorld/${VERSION}@${CLIENT}"
+        String command = "create .. HelloWorld/${VERSION}@${CLIENT}/${CHANNEL}"
         client.run(command: command)
     }
 }
