@@ -1,9 +1,9 @@
-def server
-def client
-def serverName
+def conanServer
+def conanClient
+def conanServerName
 def VERSION
-def CHANNEL
-def CLIENT
+def CHANNEL // [release, nightly, feature]
+def CLIENT 
 
 def createVersion() {
     prefix = "origin/"
@@ -31,23 +31,23 @@ def createVersion() {
 
 def preBuild() {
     sh("mkdir build | true")
-    server = Artifactory.server "artifactory"
-    client = Artifactory.newConanClient()
-    serverName = client.remote.add server: server, repo: "conan-local"
+    conanServer = Artifactory.server "artifactory"
+    conanClient = Artifactory.newConanClient()
+    conanServerName = conanClient.remote.add server: conanServer, repo: "conan-local"
     createVersion()
 }
 
 def Build() {
     dir("build") {
         String command = "create .. ${VERSION}@${CLIENT}/${CHANNEL}"
-        client.run(command: command)
+        conanClient.run(command: command)
     }
 }
 
 def publishToArtifactory() {
-    String command = "upload \"*\" --all -r ${serverName} --confirm"
-    def b = client.run(command: command)
-    server.publishBuildInfo b
+    String command = "upload \"*\" --all -r ${conanServerName} --confirm"
+    def b = conanClient.run(command: command)
+    conanServer.publishBuildInfo b
 }
 
 return this;
