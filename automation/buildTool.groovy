@@ -3,13 +3,15 @@ def conanClient
 def conanServerName
 def VERSION
 def CHANNEL // [release, nightly, feature]
-def CLIENT 
+def CLIENT // [nightly, develeap]
 
 def createVersion() {
     prefix = "origin/"
     branchname = env.GIT_BRANCH.substring(prefix.size())
-    //CHANNEL = branchname == "master" ? "release" : "feature"
+    CHANNEL = branchname == "master" ? "stable" : "release"
     ver = sh(script: "echo ${branchname} | cut -d / -f 2", returnStdout: true).trim()
+    echo "${branchname}"
+    echo "${ver}"
     //|| branchname.contains("feature/")
     if(branchname == "master") {
         lasttag = sh(script: "git tag -l --sort=version:refname \"0.0.*\" | tail -1", returnStdout: true).trim()
@@ -25,7 +27,9 @@ def createVersion() {
         }
         VERSION = newtag
         CLIENT = "rgo"
-        CHANNEL = "nightly"
+    }
+    else if(branchname.startsWith("release")) {
+        
     }
 }
 
@@ -39,7 +43,7 @@ def preBuild() {
 
 def Build() {
     dir("build") {
-        String command = "create .. ${VERSION}@${CLIENT}/${CHANNEL}"
+        String command = "create .. HelloWorld/${VERSION}@${CLIENT}/${CHANNEL}"
         conanClient.run(command: command)
     }
 }

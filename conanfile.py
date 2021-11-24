@@ -2,7 +2,6 @@ from conans import ConanFile, CMake, tools
 
 
 class MyAppConan(ConanFile):
-    name = ""
     generators = "cmake"
     exports_sources = "src/*"
 
