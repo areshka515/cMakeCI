@@ -39,7 +39,7 @@ def preBuild() {
 
 def Build() {
     dir("build") {
-        String command = "create .. HelloWorld/${VERSION}@${CLIENT}/${CHANNEL}"
+        String command = "create .. ${VERSION}@${CLIENT}/${CHANNEL}"
         client.run(command: command)
     }
 }
