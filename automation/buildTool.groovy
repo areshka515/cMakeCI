@@ -3,19 +3,22 @@ def client
 def serverName
 def VERSION
 def CHANNEL
+def CLIENT
+
+def clients = ["nightly", "develeap", "rgo", "google"]
 
 def createVersion() {
     prefix = "origin/"
     branchname = env.GIT_BRANCH.substring(prefix.size())
     CHANNEL = branchname == "master" ? "release" : "feature"
-    if(branchname == "master" || branchname.contains("feature/")) {
-        ver = sh(script: "echo ${branchname} | cut -d / -f 2", returnStdout: true).trim()
-
-        lasttag = sh(script: "git tag -l --sort=version:refname \"${ver}.*\" | tail -1", returnStdout: true).trim()
+    ver = sh(script: "echo ${branchname} | cut -d / -f 2", returnStdout: true).trim()
+    //|| branchname.contains("feature/")
+    if(branchname == "master") {
+        lasttag = sh(script: "git tag -l --sort=version:refname \"0.0.*\" | tail -1", returnStdout: true).trim()
         def newtag
         if (lasttag.isEmpty()) {
-            sh "git tag ${ver}.0"
-            newtag = "${ver}.0"
+            sh "git tag 0.0.0"
+            newtag = "0.0.0"
         } else {
             newtag = lasttag.split('\\.')
             newtag[1] = newtag[1].toInteger() + 1
@@ -23,6 +26,7 @@ def createVersion() {
             sh "git tag ${newtag}"
         }
         VERSION = newtag
+        CLIENT = clients[0];
     }
 }
 
@@ -36,7 +40,7 @@ def preBuild() {
 
 def Build() {
     dir("build") {
-        String command = "create .. HelloWorld/${VERSION}@jenkins/${CHANNEL}"
+        String command = "create .. HelloWorld/${VERSION}@${CLIENT}/${CHANNEL}"
         client.run(command: command)
     }
 }
