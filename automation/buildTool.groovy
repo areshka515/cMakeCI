@@ -5,7 +5,7 @@ def VERSION
 def CHANNEL
 def CLIENT
 
-def clients = ["nightly", "develeap", "rgo", "google"]
+def clients = ["nightly", "develeap", "rgo", "google"] as String[]
 
 def createVersion() {
     prefix = "origin/"
@@ -21,7 +21,7 @@ def createVersion() {
             newtag = "0.0.0"
         } else {
             newtag = lasttag.split('\\.')
-            newtag[1] = newtag[1].toInteger() + 1
+            newtag[2] = newtag[2].toInteger() + 1
             newtag = newtag.join('.')
             sh "git tag ${newtag}"
         }
