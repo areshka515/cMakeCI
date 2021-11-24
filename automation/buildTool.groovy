@@ -1,6 +1,7 @@
 def conanServer
 def conanClient
 def conanServerName
+def NAME // name of the build
 def VERSION // version of the artifcat
 def CHANNEL // [release, nightly, feature]
 def CLIENT // [nightly, develeap]
@@ -8,9 +9,6 @@ def CLIENT // [nightly, develeap]
 def createVersion() {
     prefix = "origin/"
     branchname = env.GIT_BRANCH.substring(prefix.size())
-    //ver = sh(script: "echo ${branchname} | cut -d _ -f 2", returnStdout: true).trim()
-    echo "${branchname}"
-    //|| branchname.contains("feature/")
     if(branchname == "master") {
         lasttag = sh(script: "git tag -l --sort=version:refname \"0.0.*\" | tail -1", returnStdout: true).trim()
         def newtag
@@ -23,6 +21,7 @@ def createVersion() {
             newtag = newtag.join('.')
             sh "git tag ${newtag}"
         }
+        NAME = "HelloWorld"
         VERSION = newtag
         CLIENT = "rgo"
         CHANNEL = "stable"
@@ -40,6 +39,7 @@ def createVersion() {
             newtag = newtag.join('.')
             sh "git tag ${newtag}"
         }
+        NAME = releasebranch[2]
         VERSION = newtag
         CLIENT = releasebranch[1]
         CHANNEL = "release"
@@ -57,7 +57,7 @@ def preBuild() {
 
 def Build() {
     dir("build") {
-        String command = "create .. HelloWorld/${VERSION}@${CLIENT}/${CHANNEL}"
+        String command = "create .. ${NAME}/${VERSION}@${CLIENT}/${CHANNEL}"
         conanClient.run(command: command)
     }
 }
