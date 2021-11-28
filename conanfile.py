@@ -16,7 +16,7 @@ class MyAppConan(ConanFile):
 
     def package(self):
         self.copy("*.h", dst="include", src="src")
-        self.copy("*.a", dst="lib", keep_path=False)
+        self.copy("*", dst="lib", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = ["HelloWorld"]
