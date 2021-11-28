@@ -60,7 +60,7 @@ def ImportHeader() {
 
 def Build() {
     dir("build") {
-        String command = "create . ${NAME}/${VERSION}@${CLIENT}/${CHANNEL} --install-folder build"
+        String command = "create . ${NAME}/${VERSION}@${CLIENT}/${CHANNEL}"
         conanClient.run(command: command)
     }
 }
