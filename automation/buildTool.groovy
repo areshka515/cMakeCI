@@ -51,6 +51,7 @@ def preBuild() {
     conanClient = Artifactory.newConanClient()
     conanServerName = conanClient.remote.add server: conanServer, repo: "conan-local"
     createVersion()
+    sh("mkdir build | true")
 }
 
 def ImportHeader() {
@@ -58,8 +59,10 @@ def ImportHeader() {
 }
 
 def Build() {
-    String command = "create . ${NAME}/${VERSION}@${CLIENT}/${CHANNEL} --install-folder build"
-    conanClient.run(command: command)
+    dir("build") {
+        String command = "create . ${NAME}/${VERSION}@${CLIENT}/${CHANNEL} --install-folder build"
+        conanClient.run(command: command)
+    }
 }
 
 def publishToArtifactory() {
