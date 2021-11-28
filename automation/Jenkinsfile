@@ -12,6 +12,14 @@ pipeline {
             }
         }
 
+        stage("Import Header") { 
+            steps {
+                script {
+                    tool.ImportHeader();
+                }
+            }
+        }
+
         stage("Build") {
             steps {
                 script {

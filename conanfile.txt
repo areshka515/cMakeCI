@@ -1,0 +1,5 @@
+[requires]
+Hello/0.1@user/channel
+
+[imports]
+include, *.h -> ../src

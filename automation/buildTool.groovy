@@ -43,23 +43,23 @@ def createVersion() {
         VERSION = newtag
         CLIENT = releasebranch[1]
         CHANNEL = "release"
-        echo "${VERSION}"
     }
 }
 
 def preBuild() {
-    sh("mkdir build | true")
     conanServer = Artifactory.server "artifactory"
     conanClient = Artifactory.newConanClient()
     conanServerName = conanClient.remote.add server: conanServer, repo: "conan-local"
     createVersion()
 }
 
+def ImportHeader() {
+    conanClient.run(command: "install conanfile.txt --install-folder header_build")
+}
+
 def Build() {
-    dir("build") {
-        String command = "create .. ${NAME}/${VERSION}@${CLIENT}/${CHANNEL}"
-        conanClient.run(command: command)
-    }
+    String command = "create . ${NAME}/${VERSION}@${CLIENT}/${CHANNEL} --install-folder build"
+    conanClient.run(command: command)
 }
 
 def publishToArtifactory() {
